@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">扫雷</string>
+    <string name="new_game">新游戏</string>
+    <string name="continue_game">继续游戏</string>
+    <string name="option">设置</string>
+    <string name="exit_game">退出游戏</string>
+    <string name="esay">简单</string>
+    <string name="medium">中等</string>
+    <string name="difficulty">困难</string>
+    <string name="custom_level">自定义</string>
+</resources>
