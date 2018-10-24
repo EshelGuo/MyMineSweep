@@ -46,35 +46,45 @@ public class MineAlgorithm {
 
 
     private static int clearMineFromKnown() throws RemoteException {
+        int lastKnownMineSize = knownMineList.size();
         for (int i = 0; i < knownMineList.size(); i++) {
             Mine mine = knownMineList.get(i);
             List<Mine> unknownMines = mine.getUnknownMines();
             int unKnown = unknownMines.size();
             int knownMine = mine.getKnownMineSize();
 
-            for (int j = 1; j <= 8; j++) {
-                if(unKnown+knownMine == j && mine.mineNumber == j){
-                    for (Mine mineMine : unknownMines) {
-                        if(mineMine.mineNumber == -2) {
-                            mineMine.mineNumber = -1;//-1 代表雷
-                            mineProvider.longClickMine(mineMine.x, mineMine.y);
-                            unKnownMineList.remove(mineMine);
-                            knownMineList.remove(mine);
-                            i--;
+            {
+//                boolean _continue = true;
+                for (int j = 1; j <= 8; j++) {
+                    if(unKnown+knownMine == j && mine.mineNumber == j){
+                        for (Mine mineMine : unknownMines) {
+                            if(mineMine.mineNumber == -2) {
+                                mineMine.mineNumber = -1;//-1 代表雷
+                                mineProvider.longClickMine(mineMine.x, mineMine.y);
+                                unKnownMineList.remove(mineMine);
+                                knownMineList.remove(mine);
+                                i--;
+                            }
                         }
+//                        _continue = false;
+                        break;
                     }
-                    return 0;
+                }
+
+//                if(!_continue)
+//                    break;
+
+                if(knownMine == mine.mineNumber){
+                    for (Mine unknownMine : unknownMines) {
+                        clickMine(unknownMine);
+                    }
                 }
             }
-
-            if(knownMine == mine.mineNumber){
-                for (Mine unknownMine : unknownMines) {
-                    clickMine(unknownMine);
-                }
-            }
-
 
         }
+
+        if(lastKnownMineSize != knownMineList.size())
+            return clearMineFromKnown();
 
         return 0;
     }

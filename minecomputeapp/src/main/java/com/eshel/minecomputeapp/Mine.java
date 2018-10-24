@@ -8,7 +8,7 @@ public class Mine {
     private static final int TYPE_UNKNOWN = 0;
     private static final int TYPE_KNOWN = 1;
     private static final int TYPE_MINE = -1;
-    int type;
+//    int type;
 
     int x;
     int y;
