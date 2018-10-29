@@ -1,6 +1,5 @@
 package com.eshel.minecomputeapp;
 
-import android.content.Intent;
 import android.os.RemoteException;
 import android.util.Log;
 
@@ -48,6 +47,8 @@ public class MineAlgorithm {
     private static int clearMineFromKnown() throws RemoteException {
         int lastKnownMineSize = knownMineList.size();
         for (int i = 0; i < knownMineList.size(); i++) {
+            if(i < 0)
+                continue;
             Mine mine = knownMineList.get(i);
             List<Mine> unknownMines = mine.getUnknownMines();
             int unKnown = unknownMines.size();
@@ -62,10 +63,10 @@ public class MineAlgorithm {
                                 mineMine.mineNumber = -1;//-1 代表雷
                                 mineProvider.longClickMine(mineMine.x, mineMine.y);
                                 unKnownMineList.remove(mineMine);
-                                knownMineList.remove(mine);
                                 i--;
                             }
                         }
+                        knownMineList.remove(mine);
 //                        _continue = false;
                         break;
                     }
@@ -77,6 +78,19 @@ public class MineAlgorithm {
                 if(knownMine == mine.mineNumber){
                     for (Mine unknownMine : unknownMines) {
                         clickMine(unknownMine);
+                    }
+                }else {
+                    List<Mine> knownMines = MineGroup.getInstance().init(unknownMines, mine.mineNumber - mine.getKnownMineSize()).getKnownMines();
+                    if(knownMines != null ){
+                        for (Mine knownMine1 : knownMines) {
+                            if(knownMine1.mineNumber == -1){
+                                boolean remove = unKnownMineList.remove(knownMine1);
+                                if(remove)
+                                    mineProvider.longClickMine(knownMine1.x, knownMine1.y);
+                            }else {
+                                clickMine(knownMine1);
+                            }
+                        }
                     }
                 }
             }

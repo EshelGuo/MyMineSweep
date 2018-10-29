@@ -97,6 +97,36 @@ public class Mine {
         return num;
     }
 
+    /**
+     * 获取周围非雷已知的 Mine
+     */
+    public List<Mine> getNotMine(){
+        ArrayList<Mine> mines = new ArrayList<>(4);
+        if(notMine(LEFT))
+            mines.add(LEFT);
+        if(notMine(RIGHT))
+            mines.add(RIGHT);
+        if(notMine(TOP))
+            mines.add(TOP);
+        if(notMine(BOTTOM))
+            mines.add(BOTTOM);
+        if(notMine(LEFT_TOP))
+            mines.add(LEFT_TOP);
+        if(notMine(RIGHT_TOP))
+            mines.add(RIGHT_TOP);
+        if(notMine(LEFT_BOTTOM))
+            mines.add(LEFT_BOTTOM);
+        if(notMine(RIGHT_BOTTOM))
+            mines.add(RIGHT_BOTTOM);
+        return mines;
+    }
+
+    private boolean notMine(Mine mine){
+        if(mine == null)
+            return false;
+        return mine.mineNumber > 0;
+    }
+
     private static boolean isUnknownMine(Mine mine){
         return mine != null && mine.mineNumber == -2;
     }
